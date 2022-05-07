@@ -4,31 +4,52 @@ import {
   CardContent,
   Typography,
   CardActions,
+  Chip,
 } from '@mui/material'
 
-function TaskListCard() {
+function TaskListCard({ task, taskColor }) {
+  const onDragStart = (e) => {
+    e.dataTransfer.setData('text', task._id)
+  }
+
+  const onDragEnd = () => {
+    console.log('Termino el drag')
+  }
+
+  const onClick = () => {
+    console.log('Se hizo Click')
+  }
+
   return (
     <Card
       sx={{
         marginBottom: 1,
         border: '1px solid rgba(0, 0, 0, 0.12)',
-        borderLeft: '5px solid rgb(255, 0, 102)',
+        borderLeft: `5px solid ${taskColor}`,
       }}
       draggable
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onClick={onClick}
     >
       <CardActionArea>
         <CardContent>
-          <Typography sx={{ whiteSpace: 'pre-line' }}>
-            Hacer las compras
-          </Typography>
+          <Typography sx={{ whiteSpace: 'pre-line' }}>{task.title}</Typography>
         </CardContent>
         <CardActions
           sx={{
             display: 'flex',
-            justifyContent: 'end',
+            justifyContent: 'space-between',
             paddingRight: 2,
           }}
         >
+          <Chip
+            label={task.area}
+            sx={{
+              backgroundColor: taskColor,
+              color: 'white',
+            }}
+          />
           <Typography variant="body2">Creada hace 10 minuto</Typography>
         </CardActions>
       </CardActionArea>
