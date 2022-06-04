@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import TodayIcon from '@mui/icons-material/Today'
 
-const Navbar = () => {
+const Navbar = ({ handleOpen }) => {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#3f51b5' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -9,7 +9,9 @@ const Navbar = () => {
           <TodayIcon />
           <Typography variant="h6">NextJS Kanban</Typography>
         </Box>
-        <Button variant="contained">Add Task</Button>
+        <Button onClick={() => handleOpen()} variant="contained">
+          Add Task
+        </Button>
       </Toolbar>
     </AppBar>
   )

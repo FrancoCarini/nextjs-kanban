@@ -7,11 +7,12 @@ import TaskReducer from './TaskReducer'
 const TaskProvider = ({ children }) => {
   const initialState = {
     tasks: [],
+    areas: ['development', 'marketing', 'finance', 'strategy'],
     colors: {
       development: '#0B8E1D',
       marketing: '#FF00EC',
       finance: '#0087FF',
-      stragegy: '#FFFB00',
+      strategy: '#78777a',
     },
   }
 
@@ -28,6 +29,22 @@ const TaskProvider = ({ children }) => {
   useEffect(() => {
     getAllTasks()
   }, [])
+
+  const addTask = async (title, area) => {
+    try {
+      const { data } = await axios.post('/api/tasks', {
+        title,
+        area,
+      })
+
+      dispatch({
+        type: 'ADD_TASK',
+        payload: data,
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const updateTask = async (task, showNotification = false) => {
     const { _id, status, title } = task
@@ -54,7 +71,9 @@ const TaskProvider = ({ children }) => {
   }
 
   return (
-    <TaskContext.Provider value={{ ...state, getAllTasks, updateTask }}>
+    <TaskContext.Provider
+      value={{ ...state, getAllTasks, updateTask, addTask }}
+    >
       {children}
     </TaskContext.Provider>
   )

@@ -16,6 +16,11 @@ const TaskReducer = (state, action) => {
           return task
         }),
       }
+    case 'ADD_TASK':
+      return {
+        ...state,
+        tasks: [...state.tasks, action.payload],
+      }
     default:
       return {
         ...state,
