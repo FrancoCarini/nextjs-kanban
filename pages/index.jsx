@@ -7,8 +7,16 @@ import PopUp from '@/components/PopUp'
 
 export default function Home() {
   const [open, setOpen] = useState(false)
-  const handleOpen = () => {
-    setOpen((prevState) => !prevState)
+  const [task, setTask] = useState(null)
+
+  const handleOpen = (task = null) => {
+    if (task) setTask(task)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    setTask(null)
   }
 
   return (
@@ -18,26 +26,26 @@ export default function Home() {
           <Card sx={{ height: 'calc(100vh - 100px )' }}>
             <CardHeader title="Pending" />
             <Divider light />
-            <TaskList status="pending" />
+            <TaskList status="pending" openEditModal={handleOpen} />
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: 'calc(100vh - 100px )' }}>
             <CardHeader title="In Progress" />
             <Divider light />
-            <TaskList status="in-progress" />
+            <TaskList status="in-progress" openEditModal={handleOpen} />
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: 'calc(100vh - 100px )' }}>
             <CardHeader title="Finished" />
             <Divider light />
-            <TaskList status="finished" />
+            <TaskList status="finished" openEditModal={handleOpen} />
           </Card>
         </Grid>
       </Grid>
 
-      <PopUp isOpen={open} handleOpen={handleOpen} mode="new" />
+      <PopUp isOpen={open} task={task} handleClose={handleClose} />
     </Layout>
   )
 }

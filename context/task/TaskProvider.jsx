@@ -47,13 +47,14 @@ const TaskProvider = ({ children }) => {
   }
 
   const updateTask = async (task, showNotification = false) => {
-    const { _id, status, title } = task
+    const { _id, status, title, area } = task
 
     try {
       await axios.put(
         `/api/tasks/${_id}`,
         {
           title,
+          area,
           status,
         },
         {

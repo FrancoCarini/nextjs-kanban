@@ -15,41 +15,52 @@ import {
 
 import TaskContext from '@/context/task/TaskContext'
 
-const PopUp = ({ isOpen, handleOpen, mode = 'new' }) => {
-  const { areas, addTask } = useContext(TaskContext)
+const PopUp = ({ isOpen, task, handleClose }) => {
+  const { areas, addTask, updateTask } = useContext(TaskContext)
 
-  const [title, setTitle] = useState('')
-  const [area, setArea] = useState(areas[0])
-
-  const handleAddTask = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    await addTask(title, area)
+    const title = e.target.elements.title.value
+    const area = e.target.elements.area.value
+
+    if (!task) {
+      await addTask(title, area)
+    } else {
+      await updateTask({
+        ...task,
+        title,
+        area,
+      })
+    }
+
+    e.target.elements.title.value = ''
+    e.target.elements.area.value = ''
+    handleClose()
   }
 
   return (
-    <Dialog open={isOpen} onClose={() => handleOpen()} maxWidth="sm" fullWidth>
-      <DialogTitle>{mode === 'new' ? 'New' : 'Edit'} Task</DialogTitle>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{task ? 'Edit' : 'New'} Task</DialogTitle>
       <Divider />
       <DialogContent>
-        <form onSubmit={handleAddTask}>
+        <form onSubmit={handleSubmit}>
           <Grid container rowSpacing={2}>
             <Grid item xs={12}>
               <TextField
+                name="title"
                 variant="outlined"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
                 label="Description"
                 fullWidth
+                defaultValue={task ? task.title : ''}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>Area</InputLabel>
                 <Select
-                  defaultValue={areas[0]}
-                  value={area}
-                  label="Age"
-                  onChange={(e) => setArea(e.target.value)}
+                  name="area"
+                  defaultValue={task ? task.area : areas[0]}
+                  label="Area"
                 >
                   {areas.map((area) => (
                     <MenuItem key={area} value={area}>
@@ -61,7 +72,7 @@ const PopUp = ({ isOpen, handleOpen, mode = 'new' }) => {
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained">
-                Add Task
+                {task ? 'Edit' : 'New'} Task
               </Button>
             </Grid>
           </Grid>

@@ -4,7 +4,7 @@ import { Paper, List } from '@mui/material'
 import TaskListCard from './TaskListCard'
 import TaskContext from '@/context/task/TaskContext'
 
-function TaskList({ status }) {
+function TaskList({ status, openEditModal }) {
   const { tasks, colors, updateTask } = useContext(TaskContext)
 
   const tasksByStatus = useMemo(
@@ -39,6 +39,7 @@ function TaskList({ status }) {
               key={task._id}
               task={task}
               taskColor={colors[task.area]}
+              openEditModal={() => openEditModal(task)}
             />
           ))}
         </List>

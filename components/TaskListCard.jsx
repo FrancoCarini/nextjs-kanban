@@ -7,17 +7,15 @@ import {
   Chip,
 } from '@mui/material'
 
-function TaskListCard({ task, taskColor }) {
+import { getTimeAgo } from '@/utils/time'
+
+function TaskListCard({ task, taskColor, openEditModal }) {
   const onDragStart = (e) => {
     e.dataTransfer.setData('text', task._id)
   }
 
   const onDragEnd = () => {
     console.log('Termino el drag')
-  }
-
-  const onClick = () => {
-    console.log('Se hizo Click')
   }
 
   return (
@@ -30,7 +28,7 @@ function TaskListCard({ task, taskColor }) {
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      onClick={onClick}
+      onClick={openEditModal}
     >
       <CardActionArea>
         <CardContent>
@@ -50,7 +48,9 @@ function TaskListCard({ task, taskColor }) {
               color: 'white',
             }}
           />
-          <Typography variant="body2">Creada hace 10 minuto</Typography>
+          <Typography variant="body2">
+            Created {getTimeAgo(new Date(task.createdAt).valueOf())}
+          </Typography>
         </CardActions>
       </CardActionArea>
     </Card>

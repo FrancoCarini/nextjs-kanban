@@ -12,6 +12,7 @@ const TaskReducer = (state, action) => {
           if (task._id === action.payload._id) {
             task.status = action.payload.status
             task.title = action.payload.title
+            task.area = action.payload.area
           }
           return task
         }),

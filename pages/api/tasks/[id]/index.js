@@ -18,7 +18,7 @@ const updateTask = async (req, res) => {
   await connect()
 
   const { id } = req.query
-  const { status, title } = req.body
+  const { status, title, area } = req.body
 
   const task = await Task.findById(id)
 
@@ -30,6 +30,7 @@ const updateTask = async (req, res) => {
   try {
     task.title = title
     task.status = status
+    task.area = area
     task.save()
     await disconnect()
     res.status(200).json(task)
